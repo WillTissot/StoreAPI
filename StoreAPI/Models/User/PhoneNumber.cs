@@ -9,9 +9,10 @@ namespace StoreAPI.Models.User
 
         public string PhoneNum { get; set; }
 
-        public PhoneNumberType PhoneNumberType { get; set; }
+        public string PhoneNumberType { get; set; }
 
         [ForeignKey("Person")]
         public int PersonId { get; set; }
+        public virtual Customer Person { get; set; }
     }
 }

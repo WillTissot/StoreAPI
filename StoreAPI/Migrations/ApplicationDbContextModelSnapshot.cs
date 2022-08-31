@@ -310,6 +310,8 @@ namespace StoreAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
                     b.ToTable("People");
                 });
 
@@ -332,6 +334,8 @@ namespace StoreAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("PhoneNumbers");
                 });
@@ -385,6 +389,28 @@ namespace StoreAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("StoreAPI.Models.User.Person", b =>
+                {
+                    b.HasOne("StoreAPI.Models.User.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("StoreAPI.Models.User.PhoneNumber", b =>
+                {
+                    b.HasOne("StoreAPI.Models.User.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
                 });
 #pragma warning restore 612, 618
         }
