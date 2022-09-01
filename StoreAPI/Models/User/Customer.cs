@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using StoreAPI.Models.Enums;
+using StoreAPI.Models.ProductT;
 
 namespace StoreAPI.Models.User
 {
@@ -18,6 +19,8 @@ namespace StoreAPI.Models.User
         public int AddressId { get; set; }
         public Address Address { get; set; }
         public IEnumerable<PhoneNumber> PhoneNumbers { get; set; }
+
+
 
     }
 }

@@ -5,6 +5,6 @@ namespace StoreAPI.Dtos
     public class UsersSerializeDto
     {
         [JsonProperty("users")]
-        public List<CustomerReadDto> Users;
+        public List<CustomerDto> Users;
     }
 }

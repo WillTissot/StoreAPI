@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StoreAPI.Models.Product
+namespace StoreAPI.Models.ProductT
 {
     [NotMapped]
     public class Rating

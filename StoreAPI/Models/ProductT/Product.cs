@@ -1,4 +1,6 @@
-﻿namespace StoreAPI.Models.Product
+﻿using StoreAPI.Models.User;
+
+namespace StoreAPI.Models.ProductT
 {
     public class Product
     {
@@ -10,5 +12,7 @@
         public string Image { get; set; }
         public float Rate { get; set; }
         public int Count { get; set; }
+
+        public ICollection<Customer>? Customers { get; set; }
     }
 }

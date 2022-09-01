@@ -12,8 +12,8 @@ using StoreAPI.Data;
 namespace StoreAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220901090135_firstMig")]
-    partial class firstMig
+    [Migration("20220901183350_mig1")]
+    partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -222,7 +222,7 @@ namespace StoreAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("StoreAPI.Models.Product.Product", b =>
+            modelBuilder.Entity("StoreAPI.Models.ProductT.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -311,9 +311,14 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Customers");
                 });
@@ -403,18 +408,32 @@ namespace StoreAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("StoreAPI.Models.ProductT.Product", null)
+                        .WithMany("Customers")
+                        .HasForeignKey("ProductId");
+
                     b.Navigation("Address");
                 });
 
             modelBuilder.Entity("StoreAPI.Models.User.PhoneNumber", b =>
                 {
                     b.HasOne("StoreAPI.Models.User.Customer", "Person")
-                        .WithMany()
+                        .WithMany("PhoneNumbers")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("StoreAPI.Models.ProductT.Product", b =>
+                {
+                    b.Navigation("Customers");
+                });
+
+            modelBuilder.Entity("StoreAPI.Models.User.Customer", b =>
+                {
+                    b.Navigation("PhoneNumbers");
                 });
 #pragma warning restore 612, 618
         }

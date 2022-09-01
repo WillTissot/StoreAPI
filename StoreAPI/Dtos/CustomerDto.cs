@@ -2,7 +2,7 @@
 
 namespace StoreAPI.Dtos
 {
-    public class CustomerReadDto
+    public class CustomerDto
     {
         [JsonProperty("userId")]
         public int Id { get; set; }

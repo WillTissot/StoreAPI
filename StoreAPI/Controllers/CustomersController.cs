@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StoreAPI.Data;
 using StoreAPI.Dtos;
+using StoreAPI.Models.User;
 
 namespace StoreAPI.Controllers
 {
@@ -19,13 +20,13 @@ namespace StoreAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/<CustomersController>
+        // GET: api/v1/
         [HttpGet(Name = "GetCustomers")]
-        public ActionResult<IEnumerable<CustomerReadDto>> Get()
+        public ActionResult<IEnumerable<CustomerDto>> GetAllCustomers()
         {
             var customers = _customerRepository.GetAllCustomers();
 
-            var customerDto = _mapper.Map<IEnumerable<CustomerReadDto>>(customers);
+            var customerDto = _mapper.Map<IEnumerable<CustomerDto>>(customers);
 
             if (customers == null)
             {
@@ -34,21 +35,73 @@ namespace StoreAPI.Controllers
             return Ok(customerDto);
 
         }
+        // GET: api/v1/{id}
+        [HttpGet("{id}")]
+        public ActionResult<CustomerDto> GetCustomer(int id)
+        {
+            var customer = _customerRepository.GetCustomer(id);
 
-        //[HttpGet(Name = "GetCustomer")]
-        //public ActionResult<IEnumerable<CustomerReadDto>> GetCustomer(int id)
-        //{
-        //    var customer = _customerRepository.GetCustomer(id);
+            var customerDto = _mapper.Map<CustomerDto>(customer);
 
-        //    var customerDto = _mapper.Map<CustomerReadDto>(customer);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return Ok(customerDto);
 
-        //    if (customer == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(customerDto);
+        }
 
-        //}
+        [HttpPost]
+        public ActionResult<CustomerDto> CreateCustomer(CustomerDto customerDto)
+        {
+            var customer = _mapper.Map<Customer>(customerDto);
+
+            _customerRepository.CreateCustomer(customer);
+
+            var answer = _customerRepository.SaveChanges();
+
+            if (answer == true)
+            {
+                return Ok("Customer Created!");
+            }
+            return Problem("Oops! Customer was not created!");
+
+        }
+
+
+        [HttpPut("{id}")]
+        public ActionResult<CustomerDto> UpdateCustomer(CustomerDto customerDto)
+        {
+            var customer = _mapper.Map<Customer>(customerDto);
+
+            _customerRepository.UpdateCustomer(customer);
+
+            var answer = _customerRepository.SaveChanges();
+
+            if (answer == true)
+            {
+                return Ok("Customer Updated!");
+            }
+            return Problem("Oops! Customer was not updated!");
+
+        }
+
+
+        [HttpDelete("{id}")]
+        public ActionResult<CustomerDto> DeleteCustomer(int id)
+        {
+
+            _customerRepository.DeleteCustomer(id);
+
+            var answer = _customerRepository.SaveChanges();
+
+            if (answer == true)
+            {
+                return Ok("Customer Deleted!");
+            }
+            return Problem("Oops! Customer was not deleted!");
+
+        }
 
 
     }

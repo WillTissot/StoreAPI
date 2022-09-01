@@ -7,7 +7,7 @@ namespace StoreAPI.Data
 {
     public class DataSeeder
     {
-        private readonly string _path = @"C:\Users\sva\Downloads\sample_user.json";
+        private readonly string _path = @"C:\Users\vasil\Downloads\sample_user.json";
 
         private readonly ApplicationDbContext _db;
 
@@ -41,15 +41,6 @@ namespace StoreAPI.Data
                         this._db.Customers.Add(customer);
 
                         this._db.SaveChanges();
-
-                        foreach (var phoN in phoneNumbers)
-                        {
-                            phoN.PersonId = customer.Id;
-                            this._db.PhoneNumbers.Add(phoN);
-                        }
-
-                        this._db.SaveChanges();
-
                     }
                 }
             }

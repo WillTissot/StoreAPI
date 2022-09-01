@@ -12,19 +12,30 @@ namespace StoreAPI.Data
             _context = context;
         }
 
-        public void Create(Customer customer)
+        public void CreateCustomer(Customer customer)
         {
             _context.Customers.Add(customer);
         }
 
-        public void Delete(int id)
+        public void DeleteCustomer(int id)
         {
-            throw new NotImplementedException();
+            var customer = GetCustomer(id);
+            _context.Customers.Remove(customer);
+        }
+
+        public void UpdateCustomer(Customer customer)
+        {
+            _context.Customers.Update(customer);
         }
 
         public Customer GetCustomer(int id)
         {
-            return _context.Customers.FirstOrDefault(p => p.Id == id);
+            var customer = _context.Customers.FirstOrDefault(x => x.Id == id);
+
+            customer.Address = _context.Addresses.FirstOrDefault(a => a.Id == customer.AddressId);
+            customer.PhoneNumbers = _context.PhoneNumbers.Where(p => p.PersonId == customer.Id).ToList();
+            
+            return customer;
         }
 
         public IEnumerable<Customer> GetAllCustomers()
@@ -32,19 +43,11 @@ namespace StoreAPI.Data
             return _context.Customers.Include(c => c.PhoneNumbers).Include(c => c.Address).ToList();
         }
 
-        public IEnumerable<PhoneNumber> GetPhoneNumbers()
-        {
-            return _context.PhoneNumbers.ToList();
-        }
-
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);
         }
 
-        public void Update(Customer person)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

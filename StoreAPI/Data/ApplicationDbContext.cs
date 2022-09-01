@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StoreAPI.Models.Product;
+using StoreAPI.Models.ProductT;
 using StoreAPI.Models.User;
 
 namespace StoreAPI.Data

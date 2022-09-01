@@ -8,8 +8,8 @@ namespace StoreAPI.Data
     {
         public MappingProfile()
         {
-            CreateMap<Customer, CustomerReadDto>();
-            CreateMap<CustomerReadDto, Customer>();
+            CreateMap<Customer, CustomerDto>();
+            CreateMap<CustomerDto, Customer>();
 
             CreateMap<AddressDto, Address>();
             CreateMap<Address, AddressDto>();
