@@ -2,11 +2,11 @@
 
 namespace StoreAPI.Data
 {
-    public class Repository : IRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public Repository(ApplicationDbContext context)
+        public CustomerRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -29,6 +29,11 @@ namespace StoreAPI.Data
         public IEnumerable<Customer> GetAll()
         {
             return _context.Customers.ToList();
+        }
+
+        public bool SaveChanges()
+        {
+            return (_context.SaveChanges() >= 0);
         }
 
         public void Update(Customer person)

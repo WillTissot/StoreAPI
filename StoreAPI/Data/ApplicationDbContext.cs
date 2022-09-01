@@ -16,12 +16,6 @@ namespace StoreAPI.Data
         public DbSet<Address> Addresses { get; set; }
         public DbSet<PhoneNumber> PhoneNumbers { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
 
-            //builder.Entity<Rating>().HasNoKey();
-            //builder.Entity<Address>().HasNoKey();
-        }
     }
 }

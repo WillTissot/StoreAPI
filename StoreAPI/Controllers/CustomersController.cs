@@ -9,10 +9,10 @@ namespace StoreAPI.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly IRepository _repository;
+        private readonly ICustomerRepository _repository;
         private readonly IMapper _mapper;
 
-        public CustomersController(IRepository repository, IMapper mapper)
+        public CustomersController(ICustomerRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

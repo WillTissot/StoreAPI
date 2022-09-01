@@ -64,38 +64,6 @@ namespace StoreAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "People",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_People", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PhoneNumbers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PhoneNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumberType = table.Column<int>(type: "int", nullable: false),
-                    PersonId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhoneNumbers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -112,6 +80,29 @@ namespace StoreAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customers_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,6 +211,27 @@ namespace StoreAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PhoneNumbers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PhoneNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumberType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhoneNumbers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PhoneNumbers_Customers_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -258,13 +270,20 @@ namespace StoreAPI.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_AddressId",
+                table: "Customers",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhoneNumbers_PersonId",
+                table: "PhoneNumbers",
+                column: "PersonId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Addresses");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -281,9 +300,6 @@ namespace StoreAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "People");
-
-            migrationBuilder.DropTable(
                 name: "PhoneNumbers");
 
             migrationBuilder.DropTable(
@@ -294,6 +310,12 @@ namespace StoreAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
         }
     }
 }

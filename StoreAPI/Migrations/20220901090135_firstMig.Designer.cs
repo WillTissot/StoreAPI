@@ -12,7 +12,7 @@ using StoreAPI.Data;
 namespace StoreAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220831174543_firstMig")]
+    [Migration("20220901090135_firstMig")]
     partial class firstMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,7 +285,7 @@ namespace StoreAPI.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("StoreAPI.Models.User.Person", b =>
+            modelBuilder.Entity("StoreAPI.Models.User.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -303,8 +303,9 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -312,7 +313,9 @@ namespace StoreAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("People");
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("StoreAPI.Models.User.PhoneNumber", b =>
@@ -330,10 +333,13 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumberType")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumberType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("PhoneNumbers");
                 });
@@ -387,6 +393,28 @@ namespace StoreAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("StoreAPI.Models.User.Customer", b =>
+                {
+                    b.HasOne("StoreAPI.Models.User.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("StoreAPI.Models.User.PhoneNumber", b =>
+                {
+                    b.HasOne("StoreAPI.Models.User.Customer", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
                 });
 #pragma warning restore 612, 618
         }

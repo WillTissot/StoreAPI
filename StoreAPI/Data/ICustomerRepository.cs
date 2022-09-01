@@ -2,12 +2,13 @@
 
 namespace StoreAPI.Data
 {
-    public interface IRepository
+    public interface ICustomerRepository
     {
         IEnumerable<Customer> GetAll();
         Customer Get(int id);
         void Delete(int id);
         void Update(Customer person);
         void Create(Customer person);
+        bool SaveChanges();
     }
 }

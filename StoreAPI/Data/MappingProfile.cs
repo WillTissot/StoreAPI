@@ -10,6 +10,12 @@ namespace StoreAPI.Data
         {
             CreateMap<Customer, CustomerReadDto>();
             CreateMap<CustomerReadDto, Customer>();
+
+            CreateMap<AddressDto, Address>();
+            CreateMap<Address, AddressDto>();
+
+            CreateMap<PhoneNumber, PhoneNumberDto>();
+            CreateMap<PhoneNumberDto, PhoneNumber>();
         }
     }
 }

@@ -283,7 +283,7 @@ namespace StoreAPI.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("StoreAPI.Models.User.Person", b =>
+            modelBuilder.Entity("StoreAPI.Models.User.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -301,8 +301,9 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -312,7 +313,7 @@ namespace StoreAPI.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("People");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("StoreAPI.Models.User.PhoneNumber", b =>
@@ -330,8 +331,9 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumberType")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumberType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -391,7 +393,7 @@ namespace StoreAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("StoreAPI.Models.User.Person", b =>
+            modelBuilder.Entity("StoreAPI.Models.User.Customer", b =>
                 {
                     b.HasOne("StoreAPI.Models.User.Address", "Address")
                         .WithMany()
@@ -404,7 +406,7 @@ namespace StoreAPI.Migrations
 
             modelBuilder.Entity("StoreAPI.Models.User.PhoneNumber", b =>
                 {
-                    b.HasOne("StoreAPI.Models.User.Person", "Person")
+                    b.HasOne("StoreAPI.Models.User.Customer", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
