@@ -1,28 +1,29 @@
-﻿using AutoMapper;
+﻿using System.Net.WebSockets;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StoreAPI.Data;
 using StoreAPI.Dtos;
 
 namespace StoreAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly ICustomerRepository _repository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
 
         public CustomersController(ICustomerRepository repository, IMapper mapper)
         {
-            _repository = repository;
+            _customerRepository = repository;
             _mapper = mapper;
         }
 
         // GET: api/<CustomersController>
-        [HttpGet]
+        [HttpGet(Name = "GetCustomers")]
         public ActionResult<IEnumerable<CustomerReadDto>> Get()
         {
-            var customers = _repository.GetAll();
+            var customers = _customerRepository.GetAllCustomers();
 
             var customerDto = _mapper.Map<IEnumerable<CustomerReadDto>>(customers);
 
@@ -33,6 +34,21 @@ namespace StoreAPI.Controllers
             return Ok(customerDto);
 
         }
+
+        //[HttpGet(Name = "GetCustomer")]
+        //public ActionResult<IEnumerable<CustomerReadDto>> GetCustomer(int id)
+        //{
+        //    var customer = _customerRepository.GetCustomer(id);
+
+        //    var customerDto = _mapper.Map<CustomerReadDto>(customer);
+
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(customerDto);
+
+        //}
 
 
     }

@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<DataSeeder>(); //add service like dependency injection in order to seed
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

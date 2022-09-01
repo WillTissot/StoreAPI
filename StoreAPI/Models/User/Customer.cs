@@ -16,7 +16,8 @@ namespace StoreAPI.Models.User
 
         [ForeignKey("Address")]
         public int AddressId { get; set; }
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
+        public IEnumerable<PhoneNumber> PhoneNumbers { get; set; }
 
     }
 }

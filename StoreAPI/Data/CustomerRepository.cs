@@ -1,4 +1,5 @@
-﻿using StoreAPI.Models.User;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreAPI.Models.User;
 
 namespace StoreAPI.Data
 {
@@ -11,9 +12,9 @@ namespace StoreAPI.Data
             _context = context;
         }
 
-        public void Create(Customer person)
+        public void Create(Customer customer)
         {
-            _context.Add(person);
+            _context.Customers.Add(customer);
         }
 
         public void Delete(int id)
@@ -21,14 +22,19 @@ namespace StoreAPI.Data
             throw new NotImplementedException();
         }
 
-        public Customer Get(int id)
+        public Customer GetCustomer(int id)
         {
             return _context.Customers.FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IEnumerable<Customer> GetAllCustomers()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.Include(c => c.PhoneNumbers).Include(c => c.Address).ToList();
+        }
+
+        public IEnumerable<PhoneNumber> GetPhoneNumbers()
+        {
+            return _context.PhoneNumbers.ToList();
         }
 
         public bool SaveChanges()
