@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using StoreAPI.Models.Enums;
-using StoreAPI.Models.ProductT;
 
 namespace StoreAPI.Models.User
 {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using StoreAPI.Models.Enums;
 
-namespace StoreAPI.Dtos
+namespace StoreAPI.Dtos.CustomerDtos
 {
     public class PhoneNumberDto
     {

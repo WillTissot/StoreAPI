@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using StoreAPI.Dtos;
+using StoreAPI.Dtos.CustomerDtos;
+using StoreAPI.Dtos.OrderDtos;
+using StoreAPI.Models.Cart;
 using StoreAPI.Models.User;
 
-namespace StoreAPI.Data
+namespace StoreAPI.Data.Mapper
 {
     public class MappingProfile : Profile
     {
@@ -16,6 +18,9 @@ namespace StoreAPI.Data
 
             CreateMap<PhoneNumber, PhoneNumberDto>();
             CreateMap<PhoneNumberDto, PhoneNumber>();
+
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderDto, Order>();
         }
     }
 }

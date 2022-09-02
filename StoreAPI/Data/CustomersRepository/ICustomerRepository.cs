@@ -1,6 +1,6 @@
 ﻿using StoreAPI.Models.User;
 
-namespace StoreAPI.Data
+namespace StoreAPI.Data.CustomersRepository
 {
     public interface ICustomerRepository
     {

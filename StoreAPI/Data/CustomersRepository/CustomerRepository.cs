@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StoreAPI.Data.Context;
 using StoreAPI.Models.User;
 
-namespace StoreAPI.Data
+namespace StoreAPI.Data.CustomersRepository
 {
     public class CustomerRepository : ICustomerRepository
     {
@@ -34,7 +35,7 @@ namespace StoreAPI.Data
 
             customer.Address = _context.Addresses.FirstOrDefault(a => a.Id == customer.AddressId);
             customer.PhoneNumbers = _context.PhoneNumbers.Where(p => p.PersonId == customer.Id).ToList();
-            
+
             return customer;
         }
 
@@ -45,7 +46,7 @@ namespace StoreAPI.Data
 
         public bool SaveChanges()
         {
-            return (_context.SaveChanges() >= 0);
+            return _context.SaveChanges() >= 0;
         }
 
 

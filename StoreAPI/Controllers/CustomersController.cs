@@ -1,8 +1,8 @@
 ﻿using System.Net.WebSockets;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using StoreAPI.Data;
-using StoreAPI.Dtos;
+using StoreAPI.Data.CustomersRepository;
+using StoreAPI.Dtos.CustomerDtos;
 using StoreAPI.Models.User;
 
 namespace StoreAPI.Controllers
@@ -21,7 +21,7 @@ namespace StoreAPI.Controllers
         }
 
         // GET: api/v1/
-        [HttpGet(Name = "GetCustomers")]
+        [HttpGet]
         public ActionResult<IEnumerable<CustomerDto>> GetAllCustomers()
         {
             var customers = _customerRepository.GetAllCustomers();

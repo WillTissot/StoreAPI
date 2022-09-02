@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace StoreAPI.Dtos
+namespace StoreAPI.Dtos.CustomerDtos
 {
     public class AddressDto
     {

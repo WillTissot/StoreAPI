@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StoreAPI.Data;
+using StoreAPI.Data.Context;
 
 #nullable disable
 
@@ -220,7 +220,7 @@ namespace StoreAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("StoreAPI.Models.ProductT.Product", b =>
+            modelBuilder.Entity("StoreAPI.Models.Cart.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,34 +228,17 @@ namespace StoreAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Count")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<float>("Rate")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("StoreAPI.Models.User.Address", b =>
@@ -309,14 +292,9 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Customers");
                 });
@@ -398,6 +376,17 @@ namespace StoreAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("StoreAPI.Models.Cart.Order", b =>
+                {
+                    b.HasOne("StoreAPI.Models.User.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("StoreAPI.Models.User.Customer", b =>
                 {
                     b.HasOne("StoreAPI.Models.User.Address", "Address")
@@ -405,10 +394,6 @@ namespace StoreAPI.Migrations
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("StoreAPI.Models.ProductT.Product", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("ProductId");
 
                     b.Navigation("Address");
                 });
@@ -422,11 +407,6 @@ namespace StoreAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("StoreAPI.Models.ProductT.Product", b =>
-                {
-                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("StoreAPI.Models.User.Customer", b =>
