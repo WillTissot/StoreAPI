@@ -15,6 +15,9 @@ namespace StoreAPI.Data.Mapper
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerDto, Customer>().ForMember(c => c.Id, opt => opt.Ignore());
 
+            CreateMap<Customer, CustomerReadDto>();
+            CreateMap<CustomerReadDto, Customer>();
+
             CreateMap<AddressDto, Address>();
             CreateMap<Address, AddressDto>();
 

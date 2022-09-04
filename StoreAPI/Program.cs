@@ -42,7 +42,7 @@ using (var scope = scopedFactory.CreateScope())
     await serviceData.SeedProducts();
 
     var serviceProcedure = scope.ServiceProvider.GetService<ProcedureSeeder>();
-    //serviceProcedure.SeedProcedures();
+    serviceProcedure.SeedProcedures();
 }
 
 

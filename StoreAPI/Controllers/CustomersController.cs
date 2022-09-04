@@ -37,24 +37,31 @@ namespace StoreAPI.Controllers
         }
         // GET: api/v1/{id}
         [HttpGet("{id}")]
-        public ActionResult<CustomerDto> GetCustomer(int id)
+        public async Task<ActionResult<CustomerDto>> GetCustomer(int id)
         {
-            var customer = _customerRepository.GetCustomer(id);
+            var answer = _customerRepository.CustomerExists(id);
 
-            var customerDto = _mapper.Map<CustomerDto>(customer);
-
-            if (customer == null)
+            if (answer)
             {
-                return NotFound();
+                var customer = await _customerRepository.GetCustomer(id);
+
+                var customerDto = _mapper.Map<CustomerDto>(customer);
+
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+                return Ok(customerDto);
             }
-            return Ok(customerDto);
+
+            return NotFound("Customer does not exist!");
 
         }
 
         [HttpPost]
-        public ActionResult<CustomerDto> CreateCustomer(CustomerDto customerDto)
+        public ActionResult<CustomerReadDto> CreateCustomer(CustomerReadDto customerReadDto)
         {
-            var customer = _mapper.Map<Customer>(customerDto);
+            var customer = _mapper.Map<Customer>(customerReadDto);
 
             _customerRepository.CreateCustomer(customer);
 
@@ -62,45 +69,31 @@ namespace StoreAPI.Controllers
 
             if (answer == true)
             {
-                return Ok("Customer Created!");
+                return Ok($"Customer with id {customer.Id}");
             }
             return Problem("Oops! Customer was not created!");
 
         }
 
-
-        [HttpPut("{id}")]
-        public ActionResult<CustomerDto> UpdateCustomer(CustomerDto customerDto)
-        {
-            var customer = _mapper.Map<Customer>(customerDto);
-
-            _customerRepository.UpdateCustomer(customer);
-
-            var answer = _customerRepository.SaveChanges();
-
-            if (answer == true)
-            {
-                return Ok("Customer Updated!");
-            }
-            return Problem("Oops! Customer was not updated!");
-
-        }
-
-
         [HttpDelete("{id}")]
         public ActionResult<CustomerDto> DeleteCustomer(int id)
         {
+            var answer = _customerRepository.CustomerExists(id);
 
-            _customerRepository.DeleteCustomer(id);
-
-            var answer = _customerRepository.SaveChanges();
-
-            if (answer == true)
+            if (answer)
             {
-                return Ok("Customer Deleted!");
-            }
-            return Problem("Oops! Customer was not deleted!");
+                _customerRepository.DeleteCustomer(id);
 
+                var saved = _customerRepository.SaveChanges();
+
+                if (saved == true)
+                {
+                    return Ok("Customer Deleted!");
+                }
+                return Problem("Oops! Customer was not deleted!");
+            }
+
+            return Problem("Oops! Customer was not created!");
         }
 
 

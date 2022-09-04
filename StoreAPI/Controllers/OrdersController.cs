@@ -16,29 +16,41 @@ namespace StoreAPI.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly ICartRepository _cartRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
 
-        public OrdersController(ICartRepository repository, IMapper mapper)
+        public OrdersController(ICartRepository cartRepository, IMapper mapper, ICustomerRepository customerRepository)
         {
-            _cartRepository = repository;
+            _cartRepository = cartRepository;
+            _customerRepository = customerRepository;
             _mapper = mapper;
         }
 
+        //creating order for one customer
         [HttpPost]
-        public ActionResult<IEnumerable<OrderDto>> CreateOrder(IEnumerable<OrderDto> orderDto)
+        public ActionResult<IEnumerable<OrderDto>> CreateOrder(List<OrderDto> orderDto)
         {
-            var order = _mapper.Map<IEnumerable<Order>>(orderDto);
+            if (orderDto.Count == 0)
+                return NotFound("empty cart");
 
-            _cartRepository.CreateOrder(order);
+            var answer = _customerRepository.CustomerExists(orderDto[0].CustomerId);
 
-            var answer = _cartRepository.SaveChanges();
-
-            if (answer == true)
+            if (answer)
             {
-                return Ok("Order Created!");
-            }
-            return Problem("Oops! Order was not created!");
+                var order = _mapper.Map<IEnumerable<Order>>(orderDto);
 
+                _cartRepository.CreateOrder(order);
+
+                var saved = _cartRepository.SaveChanges();
+
+                if (saved == true)
+                {
+                    return Ok("Order Created!");
+                }
+                return Problem("Oops! Order was not created!");
+            }
+
+            return NotFound("customer does not exist!");
 
         }
 
@@ -59,44 +71,22 @@ namespace StoreAPI.Controllers
         }
         //get all products purchased from a customer
         [HttpGet("/Customer/{id}")]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetCustomerProdcuts(int id)
+        public ActionResult<IEnumerable<ProductDto>> GetCustomerProdcuts(int id)
         {
-            var listOfProductDtos = new List<ProductDto>();
-            var productIds = _cartRepository.GetUserProductIds(id);
+            var answer = _customerRepository.CustomerExists(id);
 
-
-
-            foreach (var productId in productIds)
+            if (answer)
             {
-                try
+                var listOfProducts = _cartRepository.GetCustomerProducts(id);
+                var listOfProductDtos = _mapper.Map<IEnumerable<ProductDto>>(listOfProducts);
+
+                if (listOfProductDtos == null)
                 {
-                    var url = "https://fakestoreapi.com/products/" + productId.ToString(); 
-                    var restClient = new RestClient(url);
-                    var request = new RestRequest(url, RestSharp.Method.Get);
-                    RestResponse response = await restClient.ExecuteAsync(request);
-                    var output = response.Content;
-                    if (output != null)
-                    {
-                        var productDto = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductDto>(output);
-                        if (productDto != null)
-                        {
-                            listOfProductDtos.Add(productDto);
-                        }
-
-                    }
+                    return NotFound("Oops! No prodcuts found.");
                 }
-                catch (Exception)
-                {
-
-                }
+                return Ok(listOfProductDtos);
             }
-
-            if (listOfProductDtos == null)
-            {
-                return NotFound("Oops! No prodcuts found.");
-            }
-            return Ok(listOfProductDtos);
-
+            return NotFound("customer does not exist!");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace StoreAPI.Data.Context
 
         public void SeedProcedures()
         {
-            var checkExistenceQuery = "select * from sysobjects where type='P' and name='GetCustomers'";
+            var checkExistenceQuery = "select * from sysobjects where type='P' and name='GetCustomer'";
 
             var connString = this._db.Database.GetConnectionString();
 

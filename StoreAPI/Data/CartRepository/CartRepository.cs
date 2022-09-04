@@ -3,6 +3,7 @@ using RestSharp;
 using StoreAPI.Data.Context;
 using StoreAPI.Dtos.ProductDtos;
 using StoreAPI.Models.Cart;
+using StoreAPI.Models.StoreProducts;
 using StoreAPI.Models.User;
 
 namespace StoreAPI.Data.CartRepository
@@ -33,9 +34,9 @@ namespace StoreAPI.Data.CartRepository
                         .ToList();
         }
 
-        public  IEnumerable<int> GetUserProductIds(int customerId)
+        public  IEnumerable<Product> GetCustomerProducts(int customerId)
         {
-            return _context.Orders.Where(o => o.CustomerId == customerId).Select(o => o.ProductId).ToList();
+            return _context.Orders.Where(o => o.CustomerId == customerId).Select(o => o.Product).ToList();
         }
                     
 

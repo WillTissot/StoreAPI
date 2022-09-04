@@ -22,7 +22,7 @@ namespace StoreAPI.Data.Context
             _mapper = mapper;
         }
 
-        public async void Seed()
+        public void Seed()
         {
             if (!_db.Customers.Any())
             {
