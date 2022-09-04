@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using StoreAPI.Models.StoreProducts;
 using StoreAPI.Models.User;
 
 namespace StoreAPI.Models.Cart
@@ -12,5 +13,6 @@ namespace StoreAPI.Models.Cart
         public Customer Customer { get; set; }
 
         public int ProductId { get; set; }
+        public Product Product { get; set; }
     }       
 }

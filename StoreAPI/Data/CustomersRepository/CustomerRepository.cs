@@ -33,7 +33,7 @@ namespace StoreAPI.Data.CustomersRepository
         {
             var customer = _context.Customers.FirstOrDefault(x => x.Id == id);
 
-            customer.Address = _context.Addresses.FirstOrDefault(a => a.Id == customer.AddressId);
+            //customer.Address = _context.Addresses.FirstOrDefault(a => a.Id == customer.AddressId);
             customer.PhoneNumbers = _context.PhoneNumbers.Where(p => p.PersonId == customer.Id).ToList();
 
             return customer;

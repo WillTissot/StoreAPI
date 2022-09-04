@@ -1,13 +1,9 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using StoreAPI;
-using StoreAPI.Data;
 using StoreAPI.Data.CartRepository;
 using StoreAPI.Data.Context;
 using StoreAPI.Data.CustomersRepository;
 using StoreAPI.Data.Mapper;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,9 +39,10 @@ using (var scope = scopedFactory.CreateScope())
 {
     var serviceData = scope.ServiceProvider.GetService<DataSeeder>();
     serviceData.Seed();
+    await serviceData.SeedProducts();
 
     var serviceProcedure = scope.ServiceProvider.GetService<ProcedureSeeder>();
-    serviceProcedure.SeedProcedures();
+    //serviceProcedure.SeedProcedures();
 }
 
 
