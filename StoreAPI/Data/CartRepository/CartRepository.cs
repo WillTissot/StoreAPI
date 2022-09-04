@@ -16,7 +16,6 @@ namespace StoreAPI.Data.CartRepository
             _context = context;
         }
 
-        private readonly string _productUrl = "https://fakestoreapi.com/products";
         public void CreateOrder(IEnumerable<Order> Order)
         {
             _context.Orders.AddRange(Order);

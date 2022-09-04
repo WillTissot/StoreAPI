@@ -12,7 +12,7 @@ using StoreAPI.Data.Context;
 namespace StoreAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220902133551_mig1")]
+    [Migration("20220903181418_mig1")]
     partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

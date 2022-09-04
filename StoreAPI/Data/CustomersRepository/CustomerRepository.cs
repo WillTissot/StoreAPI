@@ -41,6 +41,8 @@ namespace StoreAPI.Data.CustomersRepository
 
         public IEnumerable<Customer> GetAllCustomers()
         {
+            //var x = _context.Database.ExecuteSqlRaw("EXEC GetCustomers");
+
             return _context.Customers.Include(c => c.PhoneNumbers).Include(c => c.Address).ToList();
         }
 

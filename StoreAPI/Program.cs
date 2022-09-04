@@ -7,6 +7,7 @@ using StoreAPI.Data.CartRepository;
 using StoreAPI.Data.Context;
 using StoreAPI.Data.CustomersRepository;
 using StoreAPI.Data.Mapper;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<DataSeeder>(); //add service like dependency injection in order to seed
+builder.Services.AddTransient<ProcedureSeeder>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 
@@ -39,8 +41,11 @@ var app = builder.Build();
 var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
 using (var scope = scopedFactory.CreateScope())
 {
-    var service = scope.ServiceProvider.GetService<DataSeeder>();
-    service.Seed();
+    var serviceData = scope.ServiceProvider.GetService<DataSeeder>();
+    serviceData.Seed();
+
+    var serviceProcedure = scope.ServiceProvider.GetService<ProcedureSeeder>();
+    serviceProcedure.SeedProcedures();
 }
 
 
