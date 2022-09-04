@@ -4,7 +4,7 @@
 
 namespace StoreAPI.Migrations
 {
-    public partial class firstCompleteMigration : Migration
+    public partial class mig1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

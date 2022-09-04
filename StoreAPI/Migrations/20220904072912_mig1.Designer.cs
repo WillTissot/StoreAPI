@@ -11,8 +11,8 @@ using StoreAPI.Data.Context;
 namespace StoreAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220904131139_firstCompleteMigration")]
-    partial class firstCompleteMigration
+    [Migration("20220904072912_mig1")]
+    partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
