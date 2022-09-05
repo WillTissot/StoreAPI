@@ -10,7 +10,7 @@ Functionalities
 4. Delete a user
 5. Create an order
 6. Get all the customers who purchased a product
-7. Get all products a user has purchased
+7. Get all the products a user has purchased
 
 
 #Requirements
