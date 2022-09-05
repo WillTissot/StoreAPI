@@ -30,13 +30,15 @@ namespace StoreAPI.Data.CartRepository
                         o => o.CustomerId,
                         c => c.Id,
                         (o, c) => c)
+                        .Include(x => x.Address)
+                        .Include(x => x.PhoneNumbers)
                         .Select(s => s)
                         .ToList();
         }
 
         public  IEnumerable<Product> GetCustomerProducts(int customerId)
         {
-            return _context.Orders.Where(o => o.CustomerId == customerId).Select(o => o.Product).ToList();
+            return _context.Orders.Where(o => o.CustomerId == customerId).Include(p => p.Product.Rating).Select(o => o.Product).ToList();
         }
                     
 
